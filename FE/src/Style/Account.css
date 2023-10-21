@@ -1,0 +1,62 @@
+@import '../App.css';
+
+.account-page{
+    display: inline-block;
+    margin:50px auto;
+    padding: 50px 50px;
+    border-radius: 15px;
+    border: 2px dashed var(--peach-border-color);
+    text-align: center;
+}
+.user-information{
+    max-width: 1000px;
+    display: grid;
+    column-gap: 50px;
+    grid-template-columns: repeat(3,1fr);
+}
+.photo{
+    border-radius: 15px;
+    width: 80%;
+    align-items: center;
+    text-align: center;
+    margin: 50px;
+}
+.information{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+.information-button-grup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.history, .next-events {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.history-table, .next-event-table {
+    background-color: transparent;
+    width: 90%;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    vertical-align: top;
+    border: 1px solid var(--peach-border-color);
+    border-radius: 15px;
+}
+
+.table-tr {
+    display: table-row;
+    vertical-align: middle;
+    border-color: var(--peach-border-color);
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+    text-align: center;
+}
+

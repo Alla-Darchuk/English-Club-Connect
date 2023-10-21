@@ -1,0 +1,135 @@
+@import '../App.css';
+
+/* Event Home Item  */
+.event-home-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 15px;
+    border: 2px dashed var(--peach-border-color);
+    border-radius: 15px;
+    margin: 10px 50px 0px 5px;
+}
+.event-home-item-inform{
+    display: flex;
+    align-items: center;
+   
+}
+.event-home-item-inform .icon {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 15px;
+    border: 2px dashed var(--peach-border-color);
+    background-color: var(--peach-bg-transparent-color);
+    margin-left: 8px;
+}
+
+.event-home-item-inform .icon svg {
+    height: 2rem;
+    width: 2rem;
+    fill: var(--peach-border-color)
+}
+.event-home-item-inform .icon p{
+    align-items: center;
+    font-size: medium;
+    text-align: left;
+    margin: 0px;
+    margin-left: 10px;
+}
+
+/* and New Home Item  */
+
+.clasic-li{
+    list-style-type: "\22EF";
+}
+.clasic-item{
+    text-align: left;
+    margin-left: 15px;
+    margin-bottom: 20px;
+    font-size: larger;
+}
+
+/* Header // Footer */
+
+.header, .footer{
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: var(--peach-bg-color);
+    border-bottom: 2px dashed var(--peach-border-color); ;
+}
+.header-link{
+    margin-right: 30px;
+}
+.icon-header, .icon-footer{
+    border-radius: 0.125rem;
+    padding: 0.75rem;
+    border: none;
+    background-color: transparent;
+    margin-left: 8px;
+}
+.icon-header svg, .icon-footer svg{
+    height: 3rem;
+    width: 3rem;
+    fill: var(--peach-border-color);
+}
+
+.footer{
+    width: 100%;
+}
+.icon-footer{
+    margin-left: 5rem;
+}
+
+/* HistoryEventItem */
+
+#tr:nth-child(even) {
+    background-color: var(--peach-bg-transparent-color)
+}
+
+tr:hover>table-tr{
+    background-color: var(--peach-bg-transparent-color);
+}
+.table-th {
+    text-align: left;
+    padding: 0.5rem 0.5rem;
+    border-right: var(--peach-border-color) solid 1px;
+}
+
+.calendar-day{
+    --size: calc(70vw / 7);
+    width: var(--size);
+    height: var(--size);
+    background-color: var(--peach-bg-transparent-color);
+    padding: 10px;
+    border-radius: 15px;
+    border: 2px dashed  var(--peach-border-color);
+    font-size: larger;
+    overflow: hidden;
+}
+.cleen-day{
+    display: flex;
+    justify-content: space-between;
+}
+.one-event{
+    display: flex;
+    justify-content: space-between;
+}
+.date{
+    border-radius: 15px;
+    width: 30px;
+}
+.theme-of-day{
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+}

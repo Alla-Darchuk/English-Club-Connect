@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap');
+
+:root{
+  --peach-bg-color: #f8e7d1;
+  --peach-bg-transparent-color:#f8e7d19d;
+  --peach-bg-header-color: #d2d2d2;
+  --peach-border-color:#DAA06D;
+  --peach-cmp-color:#9bd7c2;
+  --peach-cmp-focus-color: #52d6a8;
+  --peach-btn-color: #fec376;
+  --peach-btn-hover-color: #faab45;
+  --peach-text-title:#060c7d;
+  --peach-text: #363645;
+
+}
+  
+  
+.App {
+  text-align: center;
+  display: block;
+  background-color: var(--peach-bg-color);
+  margin: 0px;
+  color: rgb(35, 19, 19);
+  font-family: 'Lumanosimo', cursive;
+}
+.App-header {
+  /* background-color: #d2d2d2; */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #d2d2d2;
+}
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.logo{
+  border-radius: 40%;
+}
+.home{
+  padding-top: 140px;
+  min-height: 90vh;
+}

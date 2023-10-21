@@ -1,0 +1,39 @@
+@import '../App.css';
+
+.calendar-header{
+    padding: 50px 100px 0 100px;
+    display: grid;
+    gap: 50px;
+    grid-template-columns: 1fr 3fr 1fr;
+    align-items: center;
+
+}
+.next-month, .previos-month{
+    background: none;
+    border: none;
+    width: 70px;
+    height: 70px;
+}
+.previos-month{
+    justify-self: end; 
+}
+.next-month{
+    justify-self: start;
+}
+.calendar{
+    display: inline-block;
+    border: 2px dashed var(--peach-border-color);
+    border-radius: 15px;
+    margin:50px auto;
+    padding: 30px;
+
+}
+.calendar-table{
+    display: grid;
+    gap: 10px;
+}
+.calendar-weeks{
+display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
