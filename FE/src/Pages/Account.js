@@ -82,7 +82,7 @@ function Account() {
                         <p>+380999999999 </p>
                     </div>  
                     <div className="information-button-grup">
-                        <Button className='sign-button' size="lg" onClick={() => navigate("calendar")}>Your Calendar</Button>
+                        <Button className='sign-button' size="lg" onClick={() => navigate("calendar", {state: {id: "111"}})}>Your Calendar</Button>
                         <Button className='sign-button' size="lg" >Edit account</Button>
                     </div>
                 </div>

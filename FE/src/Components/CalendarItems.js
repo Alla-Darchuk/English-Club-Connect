@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import GetCalendarEvents from "./GetCalendarEvents";
+import GetCalendarEvents from "../API/GetCalendarEvents";
 // import EventInDays from "./EventInDays";
 import background from "../img/concentrated-students-studying-outdoors.jpg"
 

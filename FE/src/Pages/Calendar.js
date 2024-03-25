@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import '../Style/Calendar.css'
-import GetCalendarEvents from "../Components/GetCalendarEvents";
+import GetCalendarEvents from "../API/GetCalendarEvents.js";
 import CalendarItems from "../Components/CalendarItems";
 import CleanDay from "../Components/CleenDay";
 import OneEventOfDay from "../Components/OneEventOfDay";
-import ModalWindow from '../Components/Modal';
-import { Modal, ModalHeader, Button, ModalBody } from "react-bootstrap";
+import Details from '../Components/Details';
+import { useLocation, useSearchParams } from "react-router-dom";
 
 
 function  Calendar(){
@@ -15,7 +15,9 @@ function  Calendar(){
     const [active, setActive] = useState(false)
     let thisMonth = new Date(year, month)
     let nextMonth = new Date(year, month + 1)
-    const [modalEvent, setModalEvent] = useState()
+    const [eventForDetail, setEventForDetail] = useState()
+    const l = useLocation()
+    console.log("id=" + l.state?.id)
     const months = [
         'January',
         'February',
@@ -105,7 +107,7 @@ function  Calendar(){
 
     function CreateModal(oneEvent) {
         setActive(true)
-        setModalEvent(<ModalWindow oneEvent={oneEvent} show={active} closeModal={()=>setActive(false)}></ModalWindow>)
+        setEventForDetail(oneEvent)
     }
         
     return (
@@ -144,9 +146,7 @@ function  Calendar(){
                     <tbody className="calendar-table">{table}</tbody> 
                 </table>
             </div>
-            <div>
-                {modalEvent}
-            </div>
+            {active ? <Details oneEvent={eventForDetail} closeModal={()=>setActive(false)} /> : null}
         </div>
     )
 }

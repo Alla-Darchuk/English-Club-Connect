@@ -1,0 +1,14 @@
+@import '../App.css';
+.locations-page {
+  display: inline-block;
+  margin: 50px auto;
+  padding: 50px 50px;
+  border-radius: 15px;
+  border: 2px dashed var(--peach-border-color);
+  text-align: center;
+  max-width: 1000px;
+}
+.location{
+  margin-bottom: 100px;
+  z-index: 0;
+}

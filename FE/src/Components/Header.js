@@ -7,15 +7,25 @@ import '../Style/Components.css'
 function Header() {
 
 const navigate = useNavigate()
-
+let role = localStorage.getItem("role")
+let credential
+if(role ==='admin'){
+    credential = <Nav.Link 
+    onClick={() => navigate("credential")} 
+    eventKey="credential"
+    className="header-link"><b>Сredential</b></Nav.Link>
+} else {
+    credential = null
+}
     return (
         <header className="header">
             <Logo></Logo>
             <Navbar>
                 <Nav variant="underline">
+                    {credential}
                     <Nav.Link onClick={() => navigate("locations")} eventKey="locations" className="header-link"><b>Location</b></Nav.Link>
                     <Nav.Link onClick={() => navigate("events")} eventKey="events" className="header-link"><b>Events</b></Nav.Link>
-                    <Nav.Link onClick={() => navigate("forum")} eventKey="forum" className="header-link"><b>Forum</b></Nav.Link>
+                    <Nav.Link onClick={() => navigate("newEvent")} eventKey="forum" className="header-link"><b>New Event</b></Nav.Link>
                     <Nav.Link onClick={() => navigate("calendar")} eventKey="calendar" className="header-link"><b>Calendar</b></Nav.Link>
                 </Nav>
                 <Navbar.Brand className="icon-header" onClick={() => navigate("/home")}>

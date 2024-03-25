@@ -1,0 +1,27 @@
+@import '../App.css';
+
+.acordion-my{
+    --bs-accordion-bg: var(--peach-bg-color);
+    --bs-accordion-border-color: var(--peach-border-color);
+    --bs-accordion-active-bg:var(--peach-bg-tertiary);
+    margin: 50px;
+}
+.acordion-item-my{
+    border: dashed 2px var(--peach-border-color);
+}
+.my-input-text{
+    --bs-body-bg: var(--peach-bg-color);
+    --bs-tertiary-bg:var(--peach-bg-tertiary);
+    --bs-border-color: var(--peach-border-color);
+}
+.my-input-text-group{
+    margin: 50px;
+    width: calc(100% - 100px);
+}
+.email-send{
+    margin: 50px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 50px;
+    align-items: baseline;
+}

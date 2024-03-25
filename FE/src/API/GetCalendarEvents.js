@@ -1,6 +1,6 @@
 export default async function GetCalendarEvents(month) {
     
-    let url ='http://localhost:8080?event=calendar&month='+month
+    let url ='http://localhost:8080/events?month='+month
     
     const response = await fetch(url, {
         method: 'GET'

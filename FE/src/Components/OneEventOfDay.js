@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import background from "../img/concentrated-students-studying-outdoors.jpg"
+import background from "../img/concentrated-students-studying-outdoors.jpg";
+import GetTimeString from "./GetTimeString";
 
 function OneEventOfDay(props) {
     const date = props.date
     const event = props.event
-    let time = ''
-    let hours = event.date.getHours()
-    let minutes = event.date.getMinutes()
+    let time = GetTimeString(event.date)
     
     let styleLevel = {
         backgroundColor:"",
@@ -23,20 +22,6 @@ function OneEventOfDay(props) {
         }
         
     
-    if (hours < 10) {
-        hours= '0'+hours
-    }
-    
-    if (minutes < 10) {
-        minutes= '0'+minutes
-    }
-
-
-
-    time = hours+':'+minutes
-            
-        
-
     if (event.level == 'A') {
         styleLevel.backgroundColor='rgba(84, 227, 84, 0.701)'
     }
@@ -48,10 +33,7 @@ function OneEventOfDay(props) {
     }
 
     function showModal() {
-        console.log(event)
         props.show(event)
-        console.log('onClick is work')
-
     }
 
     return (

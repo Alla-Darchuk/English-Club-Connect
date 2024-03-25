@@ -66,7 +66,8 @@
     left: 0px;
     width: 100%;
     background-color: var(--peach-bg-color);
-    border-bottom: 2px dashed var(--peach-border-color); ;
+    border-bottom: 2px dashed var(--peach-border-color); 
+    z-index: 2;
 }
 .header-link{
     margin-right: 30px;
@@ -130,6 +131,24 @@ tr:hover>table-tr{
     width: 30px;
 }
 .theme-of-day{
-    /* overflow: hidden; */
     text-overflow: ellipsis;
+}
+
+.theme-details{
+    margin-left: 20vh;
+}
+@media screen and (max-width: 720px){
+    .icon-header svg, .icon-footer svg{
+        height: 2rem;
+        width: 2rem;
+    }
+    .icon-footer{
+        margin-left: 3rem;
+    }
+    .header, .footer{
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }

@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "bl": "^6.0.12",
     "cors": "^2.8.5"
-  }
+  },
+  "type": "module"
 }

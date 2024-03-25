@@ -1,25 +1,65 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import GetRole from "../API/GetUsersRole.js";
+import { roleSlice } from "../redux-store/roleSlice.js";
+import { useDispatch } from "react-redux";
 import '../Style/Sign.css' 
 
  function SignIn() {
-
+    const dispatch = useDispatch()
     const navigate = useNavigate();
-    const user = useState({
+    const [user, setUser] = useState({
         login: '',
         password: ''
     })
 
-     return (
-         <main className="main">
-            <form className="form">
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setUser(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+
+    function login(){
+        GetRole(user).then(role => {
+            if(role=='user'){
+                console.log('ROLE in sign in='+role)
+            }
+            dispatch(roleSlice.actions.set(role))
+            localStorage.setItem("role", role)
+            console.log('set in localStorege Role = '+role)
+            navigate("/home")
+        })
+    }
+
+    return (
+        <main className="main">
+            <div className="form">
                 <h2   className="heading">LOGIN</h2>
-                <input placeholder="Username" className="input" type="text"     required="" value={user.name} />
-                <input placeholder="Password" className="input" type="password" required="" value={user.password} />
+                <input 
+                    placeholder="Username" 
+                    className="input" 
+                    type="text"     
+                    required="" 
+                    value={user.name}
+                    onChange={handleChange}
+                    name="login"
+                    />
+                <input 
+                    placeholder="Password" 
+                    className="input" 
+                    type="password" 
+                    required="" 
+                    value={user.password} 
+                    onChange={handleChange}
+                    name="password"
+                />
                 <div className="forgot">
                     <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                 </div>
-                 <button className="btn" onClick={() => navigate("/home")}>Login</button>
+                <button className="btn" onClick={login}>Login</button>
+                 {/* <button className="btn" onClick={() => navigate("/home")}>Login</button> */}
                 <div className="social-icons">
                     <button aria-label="Log in with Google" className="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5 fill-current">
@@ -39,7 +79,7 @@ import '../Style/Sign.css'
                 </div> 
                 <a rel="noopener noreferrer" href="#" className="" onClick={() => navigate("/signup")}>Don't have an account?</a>
                 
-            </form>
+            </div>
             
     </main>     
     )

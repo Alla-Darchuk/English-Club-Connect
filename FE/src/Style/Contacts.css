@@ -1,0 +1,38 @@
+@import '../App.css';
+.page-contactts{
+    text-align:left ;
+}
+.contact-item{
+    margin-bottom: 50px;
+}
+.media{
+    display: flex;
+    justify-content: space-around;
+}
+.icon-contacts{
+    border-radius: 0.125rem;
+    padding: 0.75rem;
+    border: none;
+    background-color: transparent;
+    margin-left: 2rem;
+}
+.icon-contacts svg{
+    height: 3rem;
+    width: 3rem;
+    transition: 1s;
+    fill: var(--peach-btn-color);
+}
+.icon-contacts svg:hover{
+    height: 3.5rem;
+    width: 3.5rem;
+    fill: var(--peach-btn-hover-color);
+}
+.contact_link{
+    font-size: 1.3rem;
+    color:var(--peach-border-color);
+    transition: 0.3s;
+
+}
+.contact_link:hover{
+    color: var(--peach-btn-color);
+}

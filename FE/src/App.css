@@ -2,6 +2,7 @@
 
 :root{
   --peach-bg-color: #f8e7d1;
+  --peach-bg-tertiary:#ead8c0;
   --peach-bg-transparent-color:#f8e7d19d;
   --peach-bg-header-color: #d2d2d2;
   --peach-border-color:#DAA06D;
@@ -11,6 +12,7 @@
   --peach-btn-hover-color: #faab45;
   --peach-text-title:#060c7d;
   --peach-text: #363645;
+
 
 }
   
@@ -44,4 +46,20 @@
 .home{
   padding-top: 140px;
   min-height: 90vh;
+}
+.page{
+  display: inline-block;
+  margin: 50px auto;
+  padding: 50px 50px;
+  border-radius: 15px;
+  border: 2px dashed var(--peach-border-color);
+  text-align: center;
+}
+.btn-clasic{
+  margin: 10px;
+  background-color: var(--peach-btn-color);
+  border: none;
+}
+.btn-clasic:hover{
+  background-color: var(--peach-btn-hover-color);
 }
