@@ -31,18 +31,18 @@ class EventRepository{
     getByUserId (userId){
         if (typeof(userId) != 'number') {
             // throw Error("")
-            console.log("EROR!   userId is not a number")
+            // console.log("EROR!   userId is not a number")
         }
         if (!Number.isInteger(userId)) {
             // throw IllegalArgumentError()
-            console.log("EROR!   userId is number but not integer")
+            // console.log("EROR!   userId is number but not integer")
         }
         let eventsId = [],
             userEvents = []
 
         for(let i=0; i<eventAttendees.length; i++){
             if(eventAttendees[i].user_id===userId){
-                eventsId.push(eventAttendees[i].event_Id)
+                eventsId.push(eventAttendees[i].event_id)
             }
         }
         for(let j=0; j<eventsId.length; j++){
@@ -83,19 +83,35 @@ class EventRepository{
                 counter++
             }
         }
-        return [newEvents, newEvents.length]
+        return newEvents
     }
 
-    find(location, level){
+    find(location, level, timeNow){
         let newEvents = [],
             counter = 0
         
         for(let i=0; i<events.length; i++){
             if(
             (location===null || events[i].location_id==location)&&
-            (level===null || events[i].level===level)){
+            (level===null || events[i].level===level)&&
+            (events[i].date.getTime() > timeNow)){
                 newEvents[counter] = JSON.parse(JSON.stringify(events[i]))
                 newEvents[counter] = this.addLocationObj(newEvents[counter])
+                counter++
+            }
+        }
+        return newEvents
+    }
+
+    getUsersCalendarEvents(userId, month){
+        let userEvents = [],
+            newEvents = [],
+            counter = 0
+
+        userEvents = this.getByUserId(userId)
+        for(let i=0; i<userEvents.length; i++){
+            if(new Date(userEvents[i].date).getMonth() == month){
+                newEvents[counter] = userEvents[i]
                 counter++
             }
         }
@@ -112,9 +128,15 @@ class EventRepository{
     }
 
     addAttendees(eventId, userId){
+        for(let i=0; i<eventAttendees.length;i++){
+            if((eventAttendees[i].user_id == userId) &&
+            (eventAttendees[i].event_id == eventId)){
+                return
+            }
+        }
         let newConection = {
             user_id : userId,
-            event_Id : eventId
+            event_id : eventId
         }
         eventAttendees.push(newConection)
         console.log("New attendees=")
@@ -124,7 +146,7 @@ class EventRepository{
     deleteAttendees(eventId, userId){
         for(let i = 0; i<eventAttendees.length; i++){
             if((eventAttendees[i].user_id == userId) &&
-            (eventAttendees[i].event_Id == eventId)){
+            (eventAttendees[i].event_id == eventId)){
                 eventAttendees.splice(i,1)
                 console.log('I delete Attendees! COOL')
                 break

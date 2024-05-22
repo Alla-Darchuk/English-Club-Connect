@@ -17,7 +17,7 @@ export default class EventService{
     }
     getUserEvents(id){
         let userEvents = this.eventRepository.getByUserId(id)
-        console.log(userEvents)
+        // console.log(userEvents)
         // if(userEvents){
         //     return userEvents
         // } else{
@@ -31,27 +31,23 @@ export default class EventService{
         return events
     }
 
-    getNextEvents(){
-        let events = [],
-            timeNow = new Date()
-
-        timeNow = timeNow.getTime()
-        events = this.eventRepository.getNext(timeNow)
-
-        return events
-    }
-
     findEvent(month, userId, level, location){
-        let newEvents
-        if(month){
+        let newEvents,
+        timeNow = new Date().getTime()
+
+        if((month !== null) && (userId !== null)){
+            // console.log('month&userId => month='+month+'    userId = '+userId )
+            newEvents = this.eventRepository.getUsersCalendarEvents(userId, month)
+        } else if(month!==null){
+            // console.log('Only month read.. ->getEventsByMonth')
             newEvents = this.getEventsByMonth(month)
-        } else if(userId){
-            userId = Number(userId)
+        } else if(userId!==null){
+            // console.log('Only userId read.. ->getUserEvents')
             newEvents = this.getUserEvents(userId)
-        } else if(level ||location){
-            newEvents = this.eventRepository.find(location, level)
+        } else if(level !== null || location !== null){
+            newEvents = this.eventRepository.find(location, level, timeNow)
         }else{
-            newEvents = this.getNextEvents()
+            newEvents = this.eventRepository.getNext(timeNow)
         }
         return newEvents
     }

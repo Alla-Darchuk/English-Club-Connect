@@ -2,14 +2,18 @@ import React from "react";
 import GetTimeString from "./GetTimeString";
 import PropTypes from 'prop-types';
 import { Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { getUserInformation } from "../redux-store/userInformationSlice";
+import AddParticipant from "../API/AddParticipant";
 
 function EventCard(props) {
-  let event = props.eventForCard
+  const event = props.eventForCard
   const date = new Date(event.date)
   const time = GetTimeString(date)
-  const location = event.plase
+  const location = event.location.name
   const day = date.getDate()
   const month = date.getMonth()
+  const user = useSelector(getUserInformation)
   let level
     if (event.level === 'A') {
         level ="Elementary"
@@ -22,8 +26,9 @@ function EventCard(props) {
   }
 
   function joinTheEvent() {
-        alert("You have successfully joined this event")
-    }
+    AddParticipant(user.id, event.id)
+    alert("You have successfully joined this event")
+  }
   return (
     <div className="card">
       <h3 className="card-information-header">{event.theme}</h3>

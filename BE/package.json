@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "bl": "^6.0.12",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "socket.io": "^4.7.5"
   },
   "type": "module"
 }

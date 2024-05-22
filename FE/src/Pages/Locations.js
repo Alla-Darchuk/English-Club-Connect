@@ -1,69 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LocationsCarousel from "../Components/LocationsCarusel";
+import GetLocations from "../API/GetLocations";
 
-import "../Style/Location.css"
+import "../Style/Location.css";
 
 function Location() {
-    const VDNH = [
-    'https://kyivpastfuture.com.ua/wp-content/uploads/2021/05/vdng-800x445.jpeg',
-    'https://relax.com.ua/wp-content/media/kiew/2016/02/vdnh-kiev.jpg',
-    'https://fakty.com.ua/wp-content/uploads/2021/05/28/VDNG.jpg',
-    'https://roomroom.com.ua/wp-content/uploads/snimok-jekrana-2020-06-30-v-15.38.19.png'
-    ]
-    const shevchenka = [
-    'https://chudokiev.com/wp-content/uploads/2018/10/park_shevchenko_2.jpg',
-    'https://f.kyivmaps.com/photo/3999/uC0gT.jpg',
-    'https://chudokiev.com/wp-content/uploads/2018/10/park_shevchenko_11.jpg',
-    'https://images.md-ukraine.com/park_shevtschenko/opt/1Qypchak_wikim1.jpg',
-    'https://iftravel.com.ua/assets/gallery/84/44271255_2009718069051265_8408840688988323840_o_crop.jpg'
-    ]
-    const kpi = [
-    'https://kor.ill.in.ua/m/1200x0/2279377.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5c/%D0%9F%D0%B0%D1%80%D0%BA_%D0%9A%D0%9F%D0%86%2C_%D0%A1%D0%BE%D0%BB%D0%BE%D0%BC%27%D1%8F%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C_%D0%BF%D1%80._%D0%9F%D0%B5%D1%80%D0%B5%D0%BC%D0%BE%D0%B3%D0%B8_02.JPG',
-    'https://weloveua.com/wp-content/uploads/2015/07/30589439.jpg',
-    'https://periscope.com.ua/sites/default/files/1/dazest/Park-KPI/park-kpi-03.jpg',
-    'https://kiev-foto.info/images/vuzy/kpi/park/park_kpi_03.webp'
-    ]
-    const pheophany = [
-    'https://mesta.com.ua/wp-content/uploads/2021/12/park-feofanija-v-kieve_4.jpeg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/%D0%A4%D0%B5%D0%BE%D1%84%D0%B0%D0%BD%D1%96%D1%8F_%D0%B2%D0%BE%D1%81%D0%B5%D0%BD%D0%B8.JPG/1200px-%D0%A4%D0%B5%D0%BE%D1%84%D0%B0%D0%BD%D1%96%D1%8F_%D0%B2%D0%BE%D1%81%D0%B5%D0%BD%D0%B8.JPG',
-    'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__hero_banner__hb_image__1880bp/public/hero_banner/Feofaniya-garden-in-Kyiv.jpg',
-    'https://img.hotels24.ua/photos/ria/news_content/110/11044/1104436/1104436.jpg',
-    'https://vechirniy.kyiv.ua/data/content/%D0%B3%D0%BE%D0%BB%D0%BE%D1%81%D0%B5%D0%B5%D0%B2%D0%BE/5d3a9c6a74e3e.jpg'
-    ]
-
-    let locations1= 
-        <LocationsCarousel plase={VDNH} title={"VDNH"} />
+    const [locations, setLocations] = useState([{
+        id: 0,
+        name: 'Location',
+        fullName: 'Location Name',
+        description: '',
+        photo: [
+            'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.lifewire.com%2Fthmb%2FYBQuRMKxxhx3Zb3uJ1x-QOT6VsM%3D%2F1500x0%2Ffilters%3Ano_upscale()%3Amax_bytes(150000)%3Astrip_icc()%2FMaplocation_-5a492a4e482c52003601ea25.jpg&tbnid=7DtHMMmSiwfonM&vet=12ahUKEwi1yYGn1KGFAxXh6AIHHfGaBTwQMygDegQIARBP..i&imgrefurl=https%3A%2F%2Fwww.lifewire.com%2Fturn-on-mobile-location-services-4156232&docid=_NLINBvD9svY7M&w=1500&h=1027&q=location&ved=2ahUKEwi1yYGn1KGFAxXh6AIHHfGaBTwQMygDegQIARBP'
+    ]}])
     
-    let locations2= 
-        <LocationsCarousel plase={shevchenka} title={"Shevchenka Park"} />
+    useEffect(()=>{
+        GetLocations().then(e=>{
+            setLocations(e)
+        })
+    },[])
     
-    let locations3= 
-        <LocationsCarousel plase={kpi} title={"KPI Park"} />
+    let locationCarousel = locations.map((location)=>
+        <div className="location">
+            <h2>{location.fullName}</h2>
+            <LocationsCarousel plase={location.photo} title={location.fullName} key={location.id}></LocationsCarousel>
+        </div>
+    )
     
-    let locations4= 
-        <LocationsCarousel plase={pheophany} title={"Pheophany Park"} />
-    
-
     return (
         <div className="locations-page">
-            <div className="location">
-                <h2>VDNH</h2>
-                {locations1}
-            </div>
-            <div className="location">
-                <h2>Shevchenka Park</h2>
-                {locations2}
-            </div>
-            <div className="location">
-                <h2>KPI Park</h2>
-                {locations3}
-            </div>
-            <div className="location">
-                <h2>Pheophany Park</h2>
-                {locations4}
-            </div>
-    
+            
+            {locationCarousel}
+
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"
-import GetRole from "../API/GetUsersRole.js";
-import { roleSlice } from "../redux-store/roleSlice.js";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import '../Style/Sign.css' 
+import Autorization from "../API/Autorization.js";
+import { userInformationSlice } from "../redux-store/userInformationSlice.js";
 
  function SignIn() {
     const dispatch = useDispatch()
@@ -22,13 +22,10 @@ import '../Style/Sign.css'
     }
 
     function login(){
-        GetRole(user).then(role => {
-            if(role=='user'){
-                console.log('ROLE in sign in='+role)
-            }
-            dispatch(roleSlice.actions.set(role))
-            localStorage.setItem("role", role)
-            console.log('set in localStorege Role = '+role)
+        Autorization(user).then(userInformation =>{
+            console.log('User inform = ')
+            console.log(userInformation)
+            dispatch(userInformationSlice.actions.set(userInformation))
             navigate("/home")
         })
     }
@@ -59,7 +56,6 @@ import '../Style/Sign.css'
                     <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                 </div>
                 <button className="btn" onClick={login}>Login</button>
-                 {/* <button className="btn" onClick={() => navigate("/home")}>Login</button> */}
                 <div className="social-icons">
                     <button aria-label="Log in with Google" className="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5 fill-current">

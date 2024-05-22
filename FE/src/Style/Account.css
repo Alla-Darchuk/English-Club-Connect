@@ -13,6 +13,7 @@
     display: grid;
     column-gap: 50px;
     grid-template-columns: repeat(3,1fr);
+    align-items: center;
 }
 .photo{
     border-radius: 15px;

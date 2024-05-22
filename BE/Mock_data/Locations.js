@@ -43,7 +43,6 @@ var locations = [
             'https://mesta.com.ua/wp-content/uploads/2021/12/park-feofanija-v-kieve_4.jpeg',
             'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/%D0%A4%D0%B5%D0%BE%D1%84%D0%B0%D0%BD%D1%96%D1%8F_%D0%B2%D0%BE%D1%81%D0%B5%D0%BD%D0%B8.JPG/1200px-%D0%A4%D0%B5%D0%BE%D1%84%D0%B0%D0%BD%D1%96%D1%8F_%D0%B2%D0%BE%D1%81%D0%B5%D0%BD%D0%B8.JPG',
             'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__hero_banner__hb_image__1880bp/public/hero_banner/Feofaniya-garden-in-Kyiv.jpg',
-            'https://img.hotels24.ua/photos/ria/news_content/110/11044/1104436/1104436.jpg',
             'https://vechirniy.kyiv.ua/data/content/%D0%B3%D0%BE%D0%BB%D0%BE%D1%81%D0%B5%D0%B5%D0%B2%D0%BE/5d3a9c6a74e3e.jpg'
             ]
     }

@@ -50,7 +50,7 @@ import Events from "./Events";
           </div>
             <div>
               <Button className='sign-button' size="lg" onClick={() => navigate("signin")}> Sign in</Button>
-              <Button className='sign-button' size="lg" onClick={() => navigate("signup")}>Sign up</Button>
+              <Button className='sign-button' size="lg" onClick={() => navigate("signup")}> Sign up</Button>
             </div>
         </div>
         <div className="about-us">

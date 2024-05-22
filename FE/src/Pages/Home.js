@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getRole } from "../redux-store/roleSlice";
+import { getUserInformation } from "../redux-store/userInformationSlice";
 
 import "../App.css"
 
@@ -18,21 +18,17 @@ import CreateNewEvent from "./CreateNewEvent";
 import SuggestNewEvent from "./SuggestNewEvent";
 import Credential from "./Credential";
 
-
 function Home() {
-    // let role = useSelector(getRole)
+    const userInformation = useSelector(getUserInformation)
     let newEvent
-
     
-    let role = localStorage.getItem("role")
-    console.log('get from localStorage role - '+ role)
-    if(role === 'user'){
+    if(userInformation.role === 'user'){
         newEvent = <Route path="/newEvent" element={<SuggestNewEvent/>} />
-    } else if(role === 'admin'){
+    } else if(userInformation.role === 'admin'){
         newEvent = <Route path="/newEvent" element={<CreateNewEvent/>} />
     }
-    
-    
+
+
     return (
         <div className="home">
             <Header></Header>

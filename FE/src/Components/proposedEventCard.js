@@ -2,16 +2,18 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import GetTimeString from "./GetTimeString";
 import PropTypes from 'prop-types';
+import AddEvent from "../API/AddEvent";
+import DeleteSuggestion from "../API/DeleteSuggestion";
 
 
 
 function ProposedEventCard(props){
-    const event = props.occasion
+    let event = props.occasion
     const date = new Date(event.date)
     const time = GetTimeString(date)
-    const location = event.plase
+    const location = event.location.name
     const day = date.getDate()
-    const month = date.getMonth()
+    const month = date.getMonth()+1
     let level
         if (event.level === 'A') {
             level ="Elementary"
@@ -22,6 +24,19 @@ function ProposedEventCard(props){
         if (event.level === 'C') {
             level ="Advanced"
     }
+
+    function removeSuggestion() {
+        DeleteSuggestion(event.id)
+        props.remove(event.id)
+    }
+
+    function addOccasionToEvents(){
+        event.location_id = event.location.id 
+        delete event.location 
+        AddEvent(event)
+        removeSuggestion()
+    }
+
     return (
         <div className="proposed-event-card" >
             <Modal.Dialog >
@@ -42,8 +57,8 @@ function ProposedEventCard(props){
                 </Modal.Body>
 
                 <Modal.Footer>
-                <Button  className="btn-clasic btn-secondary" >Reject</Button>
-                <Button  className="btn-clasic">To accept</Button>
+                <Button  className="btn-clasic btn-secondary" onClick={removeSuggestion}>Reject</Button>
+                <Button  className="btn-clasic" onClick={addOccasionToEvents}>To accept</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
@@ -51,6 +66,7 @@ function ProposedEventCard(props){
 }
 ProposedEventCard.propTypes = {
     occasion: PropTypes.object.isRequired,
-    index: PropTypes.number
+    index: PropTypes.number,
+    remove:PropTypes.func.isRequired
   }
 export default ProposedEventCard

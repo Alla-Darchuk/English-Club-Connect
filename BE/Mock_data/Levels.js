@@ -1,6 +1,6 @@
 var levels=[{
     id:'A',
-    description:'Beginer'
+    description:'Elementary'
 },{
     id:'B',
     description:'Intermidiate'

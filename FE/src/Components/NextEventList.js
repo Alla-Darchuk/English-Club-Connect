@@ -8,7 +8,7 @@ function NextEventItem(props) {
     let level = ''
     let date = new Date(event.date)
     let minutes = date.getMinutes()
-    let mounth = date.getMonth()
+    let mounth = date.getMonth()+1
 
     if (mounth < 10) {
         mounth = '0'+ mounth
@@ -30,7 +30,7 @@ function NextEventItem(props) {
         <tr className="table-tr" >
             <td className="table-th">{date.getDate()},{mounth} at {date.getHours()}:{minutes}</td>
             <td className="table-th">{level}</td>
-            <td className="table-th">{event.plase}</td>
+            <td className="table-th">{event.location.name}</td>
             <td className="table-th">{event.theme}</td>
             <td><CloseButton  onClick={props.removeMe}></CloseButton></td>
         </tr>

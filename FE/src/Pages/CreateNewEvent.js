@@ -1,61 +1,92 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import ProposedEventCard from "../Components/proposedEventCard";
+import getSuggestions from "../API/GetSuggestions";
+import GetLevels from "../API/GetLevels";
+import GetLocations from "../API/GetLocations";
+import AddEvent from "../API/AddEvent";
 
 import "../Style/CreateNewEvent.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-function CreateNewEvent(){
-    let suggestion = [{
-        date: new Date('February 20, 2024 19:30:00'),
-        plase: 'VDNH park',
-        theme: 'Ordering in a restaurant, cafe, hotel, etc',
-        level: 'A'
-    },{
-        date: new Date('February 25, 2024 20:30:00'),
-        plase: 'VDNH park',
-        theme: 'Artworks',
-        level: 'B'
-    },{
-        date: new Date('February 28, 2024 19:00:00'),
-        plase: 'VDNH park',
-        theme: 'Ordering in a restaurant, cafe, hotel, etc',
-        level: 'A'
-    }]
 
-    const levels = ['A','B', 'C']
-    const locations = ['VDNH', 'shevchenka', 'kpi', 'pheophany']
-    const [level, setLevel] = useState('')
+
+function CreateNewEvent(){
+    const [level, setLevel] = useState()
     const [theme, setTheme] = useState('')
     const [location, setLocation] = useState('')
     const [date, setDate] = useState(null)
     const startDate = new Date();
-
+    const [levels, setLevels] = useState([{id:'', description:'Сhoose'}])
+    const [locations, setLocations] = useState([{ id: '', name: 'Сhoose'}])
     const [validated, setValidated] = useState(false)
+    const [suggestions, setSeggestions] = useState([{
+        id:0,
+        date: new Date(),
+        location: {name:'location'},
+        theme: 'Theme',
+        level: 'A'
+    }])
 
-    let proposedEvents = suggestion.map((occasion, index) =>
-        <ProposedEventCard occasion={occasion} key={index}></ProposedEventCard>)
+    let proposedEvents
+
+    useEffect(()=>{
+        getSuggestions().then(e=>{
+            setSeggestions(e)
+        })
+        GetLevels().then(e=>{
+            setLevels(e)
+        })
+        GetLocations().then(e=>{
+            setLocations(e)
+        })
+    },[])
+    
+
+    function removeSuggestion(id){
+        let newSuggestion = [...suggestions].filter((suggestion) => suggestion.id != id)
+        setSeggestions(newSuggestion)
+    }
+
+     
+    if(suggestions.length>0){
+        proposedEvents = suggestions.map((suggestion) =>
+        <ProposedEventCard occasion={suggestion} key={suggestion.id} remove={removeSuggestion}></ProposedEventCard>)
+    } else {
+        proposedEvents = <p> We haven't any one suggestion! </p>
+    }
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         
-        if (form.checkValidity() === false) {
+        if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
             alert("Filling out the form is incorrect")
-        } else{
-            alert("We have added your event to the suggested ones \n After confirmation by the administrator, it will appear in the 'Events' section")
+        } else if(location && level){
+            let newEvent = {
+                date: new Date(date),
+                location_id:  Number(location),
+                level:level,
+                theme:theme
+            }
+            AddEvent(newEvent)
+        } else {
+            alert("Level  or location is not choose")
         }
-    
         setValidated(true);
-        };
-    let selectLocation = locations.map((loc,index) =>
-        <option value={loc} key={index}> {loc}</option>)
+    };
 
-    let selectLevel = levels.map((level, index) => 
-        <option value={level} key={index}> {level}</option>
+
+    let selectLocation = locations.map((location) =>
+        <option value={location.id} key={location.id}> {location.name}</option>)
+
+    let selectLevel = levels.map((level) => 
+        <option value={level.id} key={level.id}> {level.description}</option>
     )
+
+
     return(
         <div className="events-page">
             <h1>Create new event</h1>
@@ -63,54 +94,55 @@ function CreateNewEvent(){
             {proposedEvents}
             <h3>If you wish, you can create an event yourself</h3>
             <Form 
-                noValidate 
                 validated={validated} 
                 onSubmit={handleSubmit}
                 >
-                 <DatePicker  
-                    minDate={startDate}
-                    selected={date}
-                    onChange={(date) => setDate(date)}
-                    placeholderText="Date" 
-                    dateFormat="MM/dd/yyyy h:mm aa" 
-                    timeInputLabel="Time:"
-                    withPortal
-                    showTimeInput
-                    required
-                />
-
-                <Form.Select required onChange={(location)=> setLocation(location)} >
-                    <option>Choose location</option>
-                    {selectLocation}
-                </Form.Select>
- 
-                <Form.Select required onChange={(level)=> setLevel(level)} >
-                    <option>Choose level</option>
-                    {selectLevel}
-                </Form.Select>
-
-                <InputGroup className="my-input-text-group my-input-text" >
-                    <InputGroup.Text>Theme:</InputGroup.Text>
-                    <Form.Control 
+                <div className="form-little-parts" >
+                    <DatePicker  
+                        minDate={startDate}
+                        selected={date}
+                        onChange={(date) => setDate(date)}
+                        placeholderText="First select time, date" 
+                        dateFormat="MM/dd/yyyy h:mm aa" 
+                        timeInputLabel="Time:"
+                        withPortal
+                        showTimeInput
                         required
-                        as="textarea"
-                        type="text"
-                        value={theme}
-                        onChange={event => setTheme(event.target.value)}
+                        className="datepicker"
                     />
-                    <Form.Control.Feedback type="invalid">
-                        Please enter theme!
-                    </Form.Control.Feedback>
-                </InputGroup>
-                <div className="email-send">
-                    <InputGroup  className="my-input-text">
-                        
+
+                    <Form.Select 
+                    required 
+                    value={location} 
+                    onChange={e=>{setLocation(e.target.value)}} >
+                        <option>Choose location</option>
+                        {selectLocation}
+                    </Form.Select>
+    
+                    <Form.Select required value={level} onChange={e=> {setLevel(e.target.value)}} >
+                        <option>Choose level</option>
+                        {selectLevel}
+                    </Form.Select>
+                </div>
+
+                <div className="form-last-elements" >
+                    <InputGroup className="my-input-text-group my-input-text my-theme" >
+                        <InputGroup.Text>Topic:</InputGroup.Text>
+                        <Form.Control 
+                            required
+                            type="text"
+                            value={theme}
+                            onChange={event => setTheme(event.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Please enter topic!
+                        </Form.Control.Feedback>
                     </InputGroup>
+
                     <Button  type="submit" className="btn-clasic">
                         Add event
                     </Button>
                 </div>
-                
             </Form>
             
             

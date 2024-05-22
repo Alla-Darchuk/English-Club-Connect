@@ -2,7 +2,7 @@ import photo from '../img/group-of-cheerful-students-teenagers-in-casual-outfits
 
 
 function UserPhoto() {
+   
     return <img src={photo} alt="User Photo" className='photo'/>
 }
-
 export default UserPhoto

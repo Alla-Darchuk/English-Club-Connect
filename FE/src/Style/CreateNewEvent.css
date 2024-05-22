@@ -16,3 +16,27 @@
     background-color: #6c757d;
     color: #fff;
 }
+.form-little-parts{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    margin: 30px auto;
+    gap:20px;
+}
+
+.datepicker{
+    padding: .375rem .75rem .375rem .75rem;
+    border-radius: 5px;
+    border: solid #dee2e6 1px
+}
+
+.form-last-elements{
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+    align-items: center;
+    gap:20px
+}
+.my-theme{
+    margin: 0;
+    width: 100%;
+}

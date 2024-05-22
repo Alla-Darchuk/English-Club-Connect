@@ -1,89 +1,101 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserPhoto from "../Components/UserPhoto";
 import { Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { userInformationSlice } from "../redux-store/userInformationSlice";
+import { getUserInformation } from "../redux-store/userInformationSlice";
+import GetUserEvents from "../API/GetUserEvents";
+import GetUser from "../API/GetUser";
 
 import "../Style/Account.css"
 
 import HistoryEventItem from "../Components/HistoryEventList";
 import NextEventItem from "../Components/NextEventList"
+import DeleteUsersEvent from "../API/DeleteUserEvent";
 
 function Account() {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    let history = [
-        {
-        date: new Date('August 10, 2023 20:00:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Travels',
-        level: 'A'
-    },{
-        date: new Date('August 9, 2023 19:30:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Artworks',
-        level: 'A'
-    },{
-        date: new Date('August 6, 2023 13:30:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Ordering in a restaurant, cafe, hotel, etc',
-        level: 'A'
-    },{
-        date: new Date('August 4, 2023 17:00:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Family and friends',
-        level: 'A'
-    }
-    ]
-    const[newEvents, setNewEvents] = useState([
-        {
-        date: new Date('August 10, 2023 20:00:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Travels',
-        level: 'A'
-    },{
-        date: new Date('August 9, 2023 19:30:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Artworks',
-        level: 'A'
-    },{
-        date: new Date('August 6, 2023 13:30:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Ordering in a restaurant, cafe, hotel, etc',
-        level: 'A'
-    },{
-        date: new Date('August 4, 2023 17:00:00').toISOString(),
-        plase: 'VDNH park',
-        theme: 'Family and friends',
-        level: 'A'
-    }
-    ])
+    const [user, setUser] = useState({
+        name: "Name",
+        email: 'email.com',
+        phone: '+000000000'
+    })
+    const [events,setEvents] = useState({
+        history:[],
+        next:[]
+    })
+    const firstInformation = useSelector(getUserInformation)
 
-    let historyEventList= history.map((event, index) =>
-        <HistoryEventItem event={event} key={index} />)
+    useEffect(() => {
+        let allEvents,
+        timeNow = new Date().getTime(),
+        history = [],
+        next = []
+        GetUserEvents(firstInformation.id).then(e =>{
+            allEvents = e
+            // console.log(allEvents)
+            for(let i=0; i<allEvents.length;i++){
+                if(timeNow<allEvents[i].date.getTime()){
+                    next.push(allEvents[i])
+                }else{
+                    history.push(allEvents[i])
+                }
+            }
+            setEvents({history, next})
+        })
+        GetUser(firstInformation.id).then(e => {
+            setUser(e)
+
+        })
+    },[])
+    // console.log('user = '+firstInformation.id)
+    // console.log(user)
+
+    let historyEventList= events.history.map((event) =>
+        <HistoryEventItem event={event} key={event.id} />)
     
-    let nextEventList= newEvents.map((event, index) =>
-        <NextEventItem event={event} key={index} 
-            removeMe={() => removeEvent(index)}/>)
+    let nextEventList= events.next.map((event) =>
+        <NextEventItem event={event} key={event.id} 
+            removeMe={() => removeEvent(event.id)}/>)
 
-    function removeEvent(index) {
-        console.log(newEvents)
-        console.log('function remove work   ' + 'index=' + index)
-        setNewEvents((newEvents) => newEvents.filter(
-            (newevent, pos) => pos != index))
-      
+    let userPhoto = user.photo ? 
+        <div className="photo"><img
+                src={user.photo}
+                className='photo'
+            ></img>
+        </div> : <UserPhoto className="photo" ></UserPhoto>
+    
+
+    function removeEvent(id) {
+        let newNextEvents = [...events.next].filter((oneEvent) => oneEvent.id != id)
+        // newNextEvents = newNextEvents
+        setEvents(events=>({
+            ...events,
+            next: newNextEvents
+        }))
+        DeleteUsersEvent(firstInformation.id, id)
+    }
+    function signOut(){
+        dispatch(userInformationSlice.actions.set({id: '', role: ''}))
+        navigate("/signin") 
     }
     
     return (
         <div className="account-page">
                 <div className="user-information">
-                    <UserPhoto className="photo"></UserPhoto>
+                    {userPhoto}
                     <div className="information">
-                        <p>Name</p>
-                        <p>Email@gmail.com</p>
-                        <p>+380999999999 </p>
+                        <p>{user.name }    {user.surname}</p>
+                        <p>{user.email}</p>
+                        <p>{user.phone}</p>
                     </div>  
                     <div className="information-button-grup">
-                        <Button className='sign-button' size="lg" onClick={() => navigate("calendar", {state: {id: "111"}})}>Your Calendar</Button>
+                        <Button className='sign-button' size="lg" onClick={() => navigate("calendar", {state: {id: firstInformation.id}})}>Your Calendar</Button>
                         <Button className='sign-button' size="lg" >Edit account</Button>
+                        <Button className='sign-button' size="lg" onClick={signOut}> Sign Out</Button>
                     </div>
                 </div>
                 <div className="history">

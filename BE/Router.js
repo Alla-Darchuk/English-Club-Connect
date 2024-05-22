@@ -39,7 +39,7 @@ export default class Router {
         }
         // change user
         if (reqUrl.pathname === '/user' && req.method == 'PUT'){
-            let userId = reqUrl.query.id,
+            let userId = Number(reqUrl.query.id),
                 newUser = JSON.parse(reqBody)
             this.userServise.changeUser(userId, newUser)
             res.statusCode = 202;
@@ -49,8 +49,12 @@ export default class Router {
         //get information about 1 user
         //get users & users role
         if (reqUrl.pathname ==='/user' && req.method == 'GET'){
-            let userId = reqUrl.query.id ? reqUrl.query.id : null,
-            user = this.userServise.getUser(userId)
+            
+            let userId = (reqUrl.query.id || (reqUrl.query.id === 0)) ? Number(reqUrl.query.id) : null
+            // console.log('userId in router = '+userId)
+           let eventId = reqUrl.query.eventId ? Number(reqUrl.query.eventId) : null,
+            user = this.userServise.getUser(userId, eventId)
+
             res.end(JSON.stringify(user))
         }
         //add event
@@ -63,16 +67,16 @@ export default class Router {
         }
         //add Attendees
         if (reqUrl.pathname ==='/event/participate' && req.method == 'PUT'){
-            let userId = reqUrl.query.userId,
-                eventId = reqUrl.query.eventId
+            let userId = Number(reqUrl.query.userId),
+                eventId = Number(reqUrl.query.eventId)
             this.eventService.addAttendees(eventId, userId)
             res.statusCode = 202;
             res.end()
             // res.status(202).send("Changes accepted successfully")
         }
         if (reqUrl.pathname ==='/event/participate' && req.method == 'DELETE'){
-            let userId = reqUrl.query.userId,
-                eventId = reqUrl.query.eventId
+            let userId = Number(reqUrl.query.userId),
+                eventId = Number(reqUrl.query.eventId)
             this.eventService.deleteAttendees(eventId, userId)
             res.statusCode = 202;
             res.end()
@@ -81,13 +85,13 @@ export default class Router {
         //find events...
         if (reqUrl.pathname ==='/event' && req.method == 'GET'){
             
-            let month = reqUrl.query.month ? reqUrl.query.month : null,
-                userId = reqUrl.query.userId ? reqUrl.query.userId : null,
+            let month = reqUrl.query.month ? Number(reqUrl.query.month) : null,
+                userId = reqUrl.query.userId ? Number(reqUrl.query.userId) :null,
                 level = reqUrl.query.level ? reqUrl.query.level : null,
-                location = reqUrl.query.location ? reqUrl.query.location : null,
-               
+                location = reqUrl.query.location ? Number(reqUrl.query.location) : null,
+
                 events = this.eventService.findEvent(month, userId, level, location)
-                
+                // console.log('in router level = '+level+'   location = '+location)
             res.end(JSON.stringify(events))
         }
         //get levels
@@ -113,11 +117,12 @@ export default class Router {
             // res.status(201).send('New suggestion was created')
         }
         if (reqUrl.pathname ==='/event/suggestion' && req.method == 'GET'){
+            console.log('path = suggrstion GET')
             let suggestions = this.suggestionService.getSuggestions()
             res.end(JSON.stringify(suggestions))
         }
         if (reqUrl.pathname ==='/event/suggestion' && req.method == 'DELETE'){
-            let suggestionId = reqUrl.query.suggestionId
+            let suggestionId = Number(reqUrl.query.suggestionId)
             this.suggestionService.deleteSuggestion(suggestionId)
             res.statusCode = 202;
             res.end()

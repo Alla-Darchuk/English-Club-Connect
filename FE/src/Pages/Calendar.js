@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../Style/Calendar.css'
-import GetCalendarEvents from "../API/GetCalendarEvents.js";
+import FindEvents from "../API/FindEvents.js";
 import CalendarItems from "../Components/CalendarItems";
 import CleanDay from "../Components/CleenDay";
 import OneEventOfDay from "../Components/OneEventOfDay";
@@ -12,12 +12,19 @@ function  Calendar(){
     const data = new Date()
     const year = data.getFullYear()
     const [month, setMonth] = useState(data.getMonth())
+    // console.log('first month = '+month)
     const [active, setActive] = useState(false)
     let thisMonth = new Date(year, month)
     let nextMonth = new Date(year, month + 1)
     const [eventForDetail, setEventForDetail] = useState()
-    const l = useLocation()
-    console.log("id=" + l.state?.id)
+    let userId = useLocation().state?.id 
+    // console.log('userId = '+userId)
+    const [apiObject, setApiObject] = useState({
+        month: month,
+        userId: userId
+    })
+    
+    
     const months = [
         'January',
         'February',
@@ -35,14 +42,20 @@ function  Calendar(){
     let monthName = months[month]
     let [events, setEvents] = useState([]);
     
-    useEffect(() => {
-        GetCalendarEvents(month).then(e => {
-            setEvents(e)
+    useEffect(()=>{
+        setApiObject({
+            ...apiObject,
+            month: month
         })
     },[month])
+    useEffect(() => {
+        FindEvents(apiObject).then(e => {
+            setEvents(e)
+        })
+    },[apiObject])
     
-    
-    
+    // console.log(apiObject)
+    // console.log(events)
     let daysOfPrevMonth = (thisMonth.getDay() + 6) % 7
     let daysInMonth = (nextMonth - thisMonth) / (1000 * 3600 * 24)
     
@@ -84,25 +97,22 @@ function  Calendar(){
         }
     }
     table.push(<tr key={week} className="calendar-weeks">{tr}</tr>)
-    
-    
 
     function PreviosMonth() {
-        if (month == 0) {
+        if (month === 0) {
+            // console.log('if month = 0 =>true')
             setMonth(11)
         } else {
             setMonth(month-1)
         }
-        console.log('new Month = '+ month)
     }
 
     function NextMonth() {
         if (month == 11) {
             setMonth(0)
         } else {
-            setMonth(month+1)
+            setMonth(month+1) 
         }
-        console.log('new Month = '+ month)
     }
 
     function CreateModal(oneEvent) {

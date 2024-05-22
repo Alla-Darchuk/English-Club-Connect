@@ -18,14 +18,11 @@ export default class AuthorizationService{
             if((users[i].login===login)&&(users[i].password===password)){
                 user.id=users[i].id
                 user.role=users[i].role
-                user.name=users[i].name
-                user.surname=users[i].surname
-                user.phone=users[i].phone
                 break
             }
         }
         if(user){
-            console.log('user from AuthorizationService =' +user)
+            // console.log('user from AuthorizationService =' +user)
             res.end(JSON.stringify(user))
         }else{
             res.status(401).send('Unauthorized')

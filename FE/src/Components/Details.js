@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, Button } from "react-bootstrap";
 import GoogleMapReact from 'google-map-react';
-import photo from '../img/group-of-cheerful-students-teenagers-in-casual-outfits-with-note-books-and-laptop.jpg'
+import photo from '../img/group-of-cheerful-students-teenagers-in-casual-outfits-with-note-books-and-laptop.jpg';
+import { useSelector } from "react-redux";
+import { getUserInformation } from "../redux-store/userInformationSlice";
+import AddParticipant from "../API/AddParticipant";
 
-import '../Style/Components.css'
+import '../Style/Components.css';
 import GetTimeString from "./GetTimeString";
 import SimpleMap from "./SimpleMap";
+import GetParticipants from "../API/GetParticipants";
 
 function Details(props) {
     
     const oneEvent = props.oneEvent
     const time = GetTimeString(oneEvent.date)
-    const location = oneEvent.plase
+    const location = oneEvent.location.name
     const day = oneEvent.date.getDate()
-    const month = oneEvent.date.getMonth()
-    const users = [1,2,3,4,5]
+    const month = oneEvent.date.getMonth()+1
+    const [users, setUsers] = useState()
+
+    useEffect(()=>{
+        GetParticipants(oneEvent.id).then(e=>{
+            setUsers(e)
+        })
+    },[])
+    const user = useSelector(getUserInformation)
     const defaultProps = {
         center: {
         lat: 10.99835602,
@@ -36,15 +47,24 @@ function Details(props) {
     if (oneEvent.level == 'C') {
         level ="Advanced"
      }
-    let participantsPhoto = users.map((index) =>
-        <img
-            src={photo}
-            alt="participant"
-            className="participant-photo"
-            key={index}
-        ></img>
-    )
+    let participantsPhoto,
+    participants 
+    if(users){
+        console.log('users.lenght = '+users.lenght)
+        participantsPhoto = users.map((user) =>
+            <img
+                src={user.photo}
+                alt="participant"
+                className="participant-photo"
+                key={user.id}
+            ></img>
+        )
+        participants = <div className="event-users">{participantsPhoto} </div>
+    } else{
+        participants = <p>This event haven't any one participant!</p>
+    }
     function joinTheEvent() {
+        AddParticipant(user.id, oneEvent.id)
         alert("You have successfully joined this event")
     }
     return (
@@ -66,7 +86,7 @@ function Details(props) {
                 </div>
                 <div>
                     <span className="inform-text">Participants of the event:</span>
-                    <div className="event-users">{participantsPhoto} </div>
+                    {participants}
                 </div>
                 <div>
                     <h3>Location!</h3>
